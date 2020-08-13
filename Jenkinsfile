@@ -46,6 +46,9 @@ pipeline {
               image 'ubuntu'
             }
           }
+          options {
+            skipDefaultCheckout()
+          }
           steps {
             unstash 'source_code'
             sh './CI/zip-artifact.sh'
@@ -58,6 +61,9 @@ pipeline {
     stage('Deploy') {
       when {
         branch 'master'
+      }
+      options {
+        skipDefaultCheckout()
       }
       steps {
         unstash 'docker-compose'
