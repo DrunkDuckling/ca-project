@@ -39,9 +39,17 @@ pipeline {
             sh 'docker push drunkduckling/flaskapp'
           }
         }
-        stage('Create artifct') {
+        stage('Create artifact') {
+          agent {
+            docker {
+              image 'ubuntu'
+            }
+          }
           steps {
-            sh 'echo Making artifact'
+            unstash 'source_code'
+            sh 'apt-get update -y && apt-get upgrade -y && apt-get install zip -y'
+            sh 'zip -r ./ca-project.zip .'
+            archiveArtifacts artifacts: 'ca-project.zip', followSymlinks: false
           }
         }
       }
