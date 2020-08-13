@@ -1,0 +1,2 @@
+GITHUB=http://github.com/drunkDuckling/ca-project/
+JENKINS=http://devops.ngram.dk:8080/
