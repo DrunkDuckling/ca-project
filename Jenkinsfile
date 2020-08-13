@@ -1,8 +1,3 @@
-def remote = [:]
-remote.name = "production"
-remote.host = "35.187.100.28"
-remote.allowAnyHosts = true
-
 pipeline {
   agent any
   stages {
@@ -51,6 +46,9 @@ pipeline {
               image 'ubuntu'
             }
           }
+          options {
+            skipDefaultCheckout()
+          }
           steps {
             unstash 'source_code'
             sh './CI/zip-artifact.sh'
@@ -64,11 +62,14 @@ pipeline {
       when {
         branch 'master'
       }
+      options {
+        skipDefaultCheckout()
+      }
       steps {
         unstash 'docker-compose'
         sshagent (credentials: ['testkeyssh']) {
-          sh 'scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@34.76.116.98:/tmp/docker-compose.yml'
-          sh 'ssh -o StrictHostKeyChecking=no ubuntu@34.76.116.98 cd /tmp/ && docker-compose up -d --build --force-recreate'
+          sh 'scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@10.123.0.44:/tmp/docker-compose.yml'
+          sh 'ssh -o StrictHostKeyChecking=no ubuntu@10.123.0.44 "cd /tmp && docker-compose up -d --build --force-recreate"'
         }
       }
     }
