@@ -31,6 +31,9 @@ pipeline {
     stage('Parallel stages') {
       parallel {
         stage('Dockerize application') {
+          when {
+            branch 'master'
+          }
           environment {
             DOCKERCREDS = credentials('docker_login2')
           }
@@ -58,6 +61,9 @@ pipeline {
     }
 
     stage('Deploy') {
+      when {
+        branch 'master'
+      }
       steps {
         unstash 'docker-compose'
         sshagent (credentials: ['testkeyssh']) {
