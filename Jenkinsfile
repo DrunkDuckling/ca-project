@@ -18,8 +18,7 @@ pipeline {
       }
       steps {
         unstash 'source_code'
-        sh 'pip install -r requirements.txt'
-        sh 'python tests.py'
+        sh './CI/run-tests.sh'
       }
     }
 
@@ -34,9 +33,7 @@ pipeline {
           }
           steps {
             unstash 'source_code'
-            sh 'docker build -t drunkduckling/flaskapp .'
-            sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
-            sh 'docker push drunkduckling/flaskapp'
+            sh './CI/push-to-docker.sh'
           }
         }
         stage('Create artifact') {
@@ -47,8 +44,7 @@ pipeline {
           }
           steps {
             unstash 'source_code'
-            sh 'apt-get update -y && apt-get upgrade -y && apt-get install zip -y'
-            sh 'zip -r ./ca-project.zip .'
+            sh './CI/zip-artifact.sh'
             archiveArtifacts artifacts: 'ca-project.zip', followSymlinks: false
           }
         }
