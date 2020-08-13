@@ -1,8 +1,3 @@
-def remote = [:]
-remote.name = "production"
-remote.host = "35.187.100.28"
-remote.allowAnyHosts = true
-
 pipeline {
   agent any
   stages {
