@@ -68,7 +68,7 @@ pipeline {
         unstash 'docker-compose'
         sshagent (credentials: ['testkeyssh']) {
           sh 'scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@34.76.116.98:/tmp/docker-compose.yml'
-          sh 'ssh -o StrictHostKeyChecking=no ubuntu@34.76.116.98 cd /tmp/ && docker-compose up -d'
+          sh 'ssh -o StrictHostKeyChecking=no ubuntu@34.76.116.98 cd /tmp/ && docker-compose down && docker-compose up -d'
         }
       }
     }
