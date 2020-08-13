@@ -16,6 +16,9 @@ pipeline {
       options {
         skipDefaultCheckout()
       }
+      steps {
+        unstash 'source_code'
+        sh 'pip install -r requirements.txt'
         sh 'python tests.py'
       }
     }
