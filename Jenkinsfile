@@ -9,14 +9,6 @@ pipeline {
 
     stage('Run tests') {
       agent {
-        docker {
-          image 'python:3.8.5-buster'
-        }
-      }
-      options {
-        skipDefaultCheckout()
-      }
-      steps {
         unstash 'source_code'
         sh 'pip install -r requirements.txt'
         sh 'python tests.py'
